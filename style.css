@@ -13,6 +13,8 @@ body {
 
 main {
     position: absolute;
+    display: flex;
+    flex-direction: column;
 }
 
 #logo {
@@ -232,11 +234,128 @@ body.hide {
     overflow: hidden;
 }
 
-.scrollmagic-pin-spacer {
+.pin-spacer {
     position: static !important;
 }
 
-/* Other pages */
+.return {
+    font-family: 'Abril Fatface';
+    color: white;
+    text-align: center;
+    text-decoration: underline;
+    margin: 3rem auto;
+    font-size: 2.5rem;
+    z-index: 2;
+
+}
+
+/* Mountains pages */
+.mountains-slide {
+    min-height: 100vh;
+    margin: 0 auto 0 auto;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    background: #17181a;
+}
+
+.mountains-desc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    flex-basis: 25rem;
+    padding-left: 5rem;
+    position: relative;
+}
+
+.mountains-container {
+    position: relative;
+    flex: 1;
+    flex-basis: 25rem;
+}
+
+.mountains-img {
+    overflow: hidden;
+}
+
+.mountains-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mountain-span1 {
+    color: rgb(86, 124, 228);
+}
+
+.mountain-span2 {
+    color: rgb(167, 110, 231);
+}
+
+.mountain-span3 {
+    color: rgb(255, 139, 93);
+}
+
+h2.title-head {
+    font-size: 4rem;
+}
+
+/* Hike page */
+.hike-slide {
+    min-height: 100vh;
+    margin: 0 auto 0 auto;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    background: #17181a;
+}
+
+.hike-desc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    flex-basis: 25rem;
+    padding-left: 5rem;
+    position: relative;
+}
+
+.hike-container {
+    position: relative;
+    flex: 1;
+    flex-basis: 25rem;
+}
+
+.hike-img {
+    overflow: hidden;
+}
+
+.hike-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hike-span1 {
+    color: rgb(86, 124, 228);
+}
+
+.hike-span2 {
+    color: rgb(167, 110, 231);
+}
+
+.hike-span3 {
+    color: rgb(255, 139, 93);
+}
+
+/* Fashion page */
 .fashion1,
 .fashion2,
 .fashion3 {
@@ -301,6 +420,12 @@ body.hide {
     opacity: 0.2;
 }
 
+.fash {
+    transform: translateY(700px);
+    padding-bottom: 3rem;
+}
+
+/* Transitions */
 .swipe {
     position: fixed;
     width: 100%;
@@ -326,6 +451,7 @@ body.hide {
     z-index: 3;
 }
 
+/* Media queries */
 @media(max-width: 1500px) {
     .hero-img {
         height: 50vh;

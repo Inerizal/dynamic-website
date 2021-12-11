@@ -1,17 +1,11 @@
+gsap.registerPlugin(ScrollTrigger);
+
 const mouse = document.querySelector('.cursor');
-const mouseText = mouse.querySelector('span');
+const mouseText = mouse.querySelector('.cursor-text');
 const burger = document.querySelector('.burger');
 const logo = document.querySelector('#logo');
 
-let controller;
-let slideScene;
-let pageScene;
-let detailScene;
-
 function animateSlides() {
-    // Init the controller
-    controller = new ScrollMagic.Controller();
-
     // Slectors
     const sliders = document.querySelectorAll('.slide');
     const nav = document.querySelector('.nav-header');
@@ -23,58 +17,53 @@ function animateSlides() {
         const revealText = slide.querySelector('.reveal-text');
 
         // GSAP
-        const slideTl = gsap.timeline({defaults: {duration: 1, ease: 'power2.inOut'}});
+        const slideTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: slide,
+                start: 'top 25%',
+                
+            },
+            defaults: {duration: 1, ease: 'power2.inOut'}
+        });
 
         slideTl.fromTo(revealImg, {x: '0%'}, {x: '100%'});
         slideTl.fromTo(img, {scale: 2}, {scale: 1}, '-=1');
         slideTl.fromTo(revealText, {x: '0%'}, {x: '100%'}, '-=0.75');
         // slideTl.fromTo(nav, {y: '-100%'}, {y: '0%'}, '-=0.5');
 
-        //Create Scene
-        slideScene = new ScrollMagic.Scene({
-            triggerElement: slide,
-            triggerHook: 0.25,
-            reverse: false
-        })
-        .setTween(slideTl)
-        // .addIndicators({
-        //     colorStart: 'white',
-        //     colorTrigger: 'white',
-        //     name: 'slide'})
-        .addTo(controller);
-
         // New Animation
-        const pageTl = gsap.timeline();
+        const pageTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: slide,
+                start: 'top top',
+                pin: true,
+                pinSpacing: false,
+                scrub: true,
+                snap: 1 / (sliders.length - 1),
+                // markers: true,
+                // end: '+=700',
+                // duration: '100%',
+                // toggleActions: 'restart none reverse none',
+                
+            },
+        });
         let nextSlide = slides.length - 1 === index ? 'end': slides[index + 1];
-        pageTl.fromTo(nextSlide, {y: '0%'}, {y: '50%'});
+        pageTl.fromTo(nextSlide, {y: '0%'}, {y: '70%'});
         pageTl.fromTo(slide, {opacity: 1, scale: 1}, {opacity: 0, scale: 0.5});
-        pageTl.fromTo(nextSlide, {y: '50%'}, {y: '0%'}, '-=0.5');
-        // Create new scene
-        pageScene = new ScrollMagic.Scene({
-            triggerElement: slide,
-            duration: '100%',
-            triggerHook: 0
-        })
-        .setTween(pageTl)
-        .setPin(slide, {pushFollowers: false})
-        // .addIndicators({
-        //     colorStart: 'white',
-        //     colorTrigger: 'white',
-        //     name: 'page',
-        //     indent: 200})
-        .addTo(controller);
+        pageTl.fromTo(nextSlide, {y: '70%'}, {y: '0%'}, '-=0.5');
     })
 }
 
 function cursor(e) {
     // let mouse = document.querySelector('.cursor');
+
     mouse.style.top = e.pageY + 'px';
     mouse.style.left = e.pageX + 'px';
 }
 
 function activeCursor(e) {
     const item = e.target;
-    if(item.id === 'logo' || item.classList.contains('burger')) {
+    if(item.id === 'logo' || item.classList.contains('burger') || item.classList.contains('return')) {
         mouse.classList.add('nav-active');
     } else {
         mouse.classList.remove('nav-active');
@@ -84,6 +73,9 @@ function activeCursor(e) {
         mouse.classList.add('explore-active');
         gsap.to('.title-swipe', 1, {y: '0%'});
         mouseText.innerText = 'Tap';
+    } else if(item.classList.contains('title-text')) {
+        mouse.classList.add('explore-active');
+        gsap.to('.title-swipe', 1, {y: '0%'});
     } else {
         mouse.classList.remove('explore-active');
         gsap.to('.title-swipe', 1, {y: '100%'});
@@ -110,29 +102,89 @@ function navToggle(e) {
     
 }
 
+function mountainsAnimation() {
+    const slides = document.querySelectorAll('.mountains-slide');
+    slides.forEach((slide, index, slides) => {
+        const slideTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: slide,
+                start: 'top top',
+                pin: true,
+                pinSpacing: false,
+                scrub: true,
+                // markers: true,
+                // end: '+=700',
+                // duration: '100%',
+                // toggleActions: 'restart none reverse none',
+                
+            },
+            defaults: {duration: 1}
+        });
+
+        let nextSlide = slides.length - 1 === index ? 'end': slides[index + 1];
+        const nextImg = nextSlide.querySelector('img');
+        // const nextDesc = nextSlide.querySelector('.mountains-desc');
+        slideTl.fromTo(slide, {opacity: 1}, {opacity: 0});
+        slideTl.fromTo(nextSlide, {opacity: 0}, {opacity: 1}, '-=1');
+        slideTl.fromTo(nextImg, {x: '50%', y: '100%'}, {x: '0%', y: '0%'});
+        // slideTl.fromTo(nextDesc, {x: '-50%', y: '100%'}, {x: '0%', y: '0%'}, '-=1');
+    })
+}
+
+function hikeAnimation() {
+    const slides = document.querySelectorAll('.hike-slide');
+    slides.forEach((slide, index, slides) => {
+        const slideTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: slide,
+                start: 'top top',
+                pin: true,
+                pinSpacing: false,
+                scrub: true,
+                // markers: true,
+                // end: '+=700',
+                // duration: '100%',
+                // toggleActions: 'restart none reverse none',
+                
+            },
+            defaults: {duration: 1}
+        });
+
+        let nextSlide = slides.length - 1 === index ? 'end': slides[index + 1];
+        const nextImg = nextSlide.querySelector('img');
+        // const nextDesc = nextSlide.querySelector('.hero-desc');
+
+        slideTl.fromTo(slide, {opacity: 1}, {opacity: 0});
+        slideTl.fromTo(nextSlide, {opacity: 0}, {opacity: 1}, '-=1');
+        slideTl.fromTo(nextImg, {x: '50%', y: '100%'}, {x: '0%', y: '0%'});
+        // slideTl.fromTo(nextDesc, {x: '-50%', y: '100%'}, {x: '0%', y: '0%'}, '-=1');
+    })
+}
+
 function detailAnimation() {
-    controller = new ScrollMagic.Controller();
     const slides = document.querySelectorAll('.detail-slide');
     slides.forEach((slide, index, slides) => {
-        const slideTl = gsap.timeline({defaults: {duration: 1}});
+        const slideTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: slide,
+                start: 'top top',
+                pin: true,
+                pinSpacing: false,
+                scrub: true,
+                // markers: true,
+                // end: '+=700',
+                // duration: '100%',
+                // toggleActions: 'restart none reverse none',
+                
+            },
+            defaults: {duration: 1}
+        });
+
         let nextSlide = slides.length - 1 === index ? 'end': slides[index + 1];
         const nextImg = nextSlide.querySelector('img');
         slideTl.fromTo(slide, {opacity: 1}, {opacity: 0});
         slideTl.fromTo(nextSlide, {opacity: 0}, {opacity: 1}, '-=1');
         slideTl.fromTo(nextImg, {x: '50%'}, {x: '0%'});
-        // Scene
-        detailScene = new ScrollMagic.Scene({
-            triggerElement: slide,
-            duration: '100%',
-            triggerHook: 0
-        })
-        .setPin(slide, {pushFollowers: false})
-        .setTween(slideTl)
-        // .addIndicators({
-        //     colorStart: 'white',
-        //     colorTrigger: 'white',
-        //     name: 'detail slide'})
-        .addTo(controller);
     })
 }
 
@@ -142,25 +194,60 @@ barba.init({
         {
             namespace: 'home',
             beforeEnter() {
+                ScrollTrigger.refresh(true);
                 animateSlides();
                 logo.href = './index.html';
             },
             beforeLeave() {
-                slideScene.destroy();
-                pageScene.destroy();
-                controller.destroy();
+                let triggers = ScrollTrigger.getAll();
+                triggers.forEach((trigger) => {
+                    trigger.kill();
+                });
+            }
+        },
+        {
+            namespace: 'mountains',
+            beforeEnter() {
+                ScrollTrigger.refresh(true);
+                logo.href = '../index.html';
+                mountainsAnimation();
+                gsap.fromTo('.nav-header', 1, {y: '-100%'}, {y: '0%', ease: 'power2.inOut'});
+            },
+            beforeLeave() {
+                let triggers = ScrollTrigger.getAll();
+                triggers.forEach((trigger) => {
+                    trigger.kill();
+                });
+            }
+        },
+        {
+            namespace: 'hike',
+            beforeEnter() {
+                ScrollTrigger.refresh(true);
+                logo.href = '../index.html';
+                hikeAnimation();
+                gsap.fromTo('.nav-header', 1, {y: '-100%'}, {y: '0%', ease: 'power2.inOut'});
+            },
+            beforeLeave() {
+                let triggers = ScrollTrigger.getAll();
+                triggers.forEach((trigger) => {
+                    trigger.kill();
+                });
             }
         },
         {
             namespace: 'fashion',
             beforeEnter() {
+                ScrollTrigger.refresh(true);
                 logo.href = '../index.html';
                 detailAnimation();
                 // gsap.fromTo('.nav-header', 1, {y: '-100%'}, {y: '0%', ease: 'power2.inOut'});
             },
             beforeLeave() {
-                detailScene.destroy();
-                controller.destroy();
+                let triggers = ScrollTrigger.getAll();
+                triggers.forEach((trigger) => {
+                    trigger.kill();
+                });
             }
         }
     ],
@@ -193,8 +280,6 @@ barba.init({
 window.addEventListener('mousemove', cursor);
 window.addEventListener('mouseover', activeCursor);
 burger.addEventListener('click', navToggle);
-
-// animateSlides();
 
 
 
